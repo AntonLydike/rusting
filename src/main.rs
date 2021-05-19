@@ -8,45 +8,47 @@ use complex::*;
 
 type Compl = Complex<f32>;
 
-struct ImageOpts {
-    width: u32,
-    height: u32
-}
-
 fn main() {
+    let center_r = -0.7438967436263865;
+    let center_i = -0.13170710837611319;
+    let scope = 0.001;
+
     let iters = 255;
-    let size = 30000;
-    
-    let path = Path::new(r"best_madelbrot_ever_rendered_by_human_beings.bmp.png");
+    let size = 50000;
+        
+    let path = Path::new(r"8bit-rgb.png");
     let file = File::create(path).unwrap();
     let ref mut w = BufWriter::new(file);
-    
+
     let mut encoder = png::Encoder::new(w, size, size); // Width is 2 pixels and height is 1.
-    encoder.set_color(png::ColorType::Grayscale);
+    encoder.set_color(png::ColorType::RGB);
     encoder.set_depth(png::BitDepth::Eight);
+    encoder.set_compression(png::Compression::Best);
     let mut writer = encoder.write_header().unwrap();
+
+    let colors: [Vec<u8>; 255] = [vec![0,7,100], vec![1,10,103], vec![2,12,106], vec![3,15,108], vec![4,17,111], vec![4,20,113], vec![5,22,116], vec![6,25,118], vec![7,27,121], vec![8,29,123], vec![8,32,126], vec![9,34,128], vec![10,37,131], vec![11,39,133], vec![11,42,136], vec![12,44,138], vec![13,47,141], vec![14,49,143], vec![15,51,146], vec![15,54,148], vec![16,56,151], vec![17,59,153], vec![18,61,156], vec![18,64,158], vec![19,66,161], vec![20,68,163], vec![21,71,166], vec![22,73,168], vec![22,76,171], vec![23,78,173], vec![24,81,176], vec![25,83,178], vec![25,86,181], vec![26,88,183], vec![27,90,186], vec![28,93,188], vec![29,95,191], vec![29,98,193], vec![30,100,196], vec![31,103,198], vec![32,105,201], vec![32,107,203], vec![36,110,204], vec![39,112,205], vec![42,114,206], vec![45,116,207], vec![48,119,207], vec![51,121,208], vec![54,123,209], vec![57,125,210], vec![60,127,210], vec![63,130,211], vec![66,132,212], vec![69,134,213], vec![72,136,214], vec![75,138,214], vec![78,141,215], vec![81,143,216], vec![85,145,217], vec![88,147,217], vec![91,149,218], vec![94,152,219], vec![97,154,220], vec![100,156,221], vec![103,158,221], vec![106,161,222], vec![109,163,223], vec![112,165,224], vec![115,167,224], vec![118,169,225], vec![121,172,226], vec![124,174,227], vec![127,176,228], vec![130,178,228], vec![133,180,229], vec![137,183,230], vec![140,185,231], vec![143,187,231], vec![146,189,232], vec![149,191,233], vec![152,194,234], vec![155,196,235], vec![158,198,235], vec![161,200,236], vec![164,202,237], vec![167,205,238], vec![170,207,238], vec![173,209,239], vec![176,211,240], vec![179,214,241], vec![182,216,242], vec![185,218,242], vec![189,220,243], vec![192,222,244], vec![195,225,245], vec![198,227,245], vec![201,229,246], vec![204,231,247], vec![207,233,248], vec![210,236,249], vec![213,238,249], vec![216,240,250], vec![219,242,251], vec![222,244,252], vec![225,247,252], vec![228,249,253], vec![231,251,254], vec![234,253,255], vec![237,255,255], vec![238,254,251], vec![238,252,246], vec![238,251,242], vec![239,249,237], vec![239,248,233], vec![239,246,228], vec![240,245,224], vec![240,243,219], vec![240,242,215], vec![241,240,210], vec![241,239,205], vec![241,237,201], vec![242,236,196], vec![242,234,192], vec![242,233,187], vec![243,231,183], vec![243,230,178], vec![243,228,174], vec![244,227,169], vec![244,225,164], vec![244,224,160], vec![245,222,155], vec![245,221,151], vec![245,219,146], vec![246,218,142], vec![246,216,137], vec![246,215,133], vec![246,213,128], vec![247,211,123], vec![247,210,119], vec![247,208,114], vec![248,207,110], vec![248,205,105], vec![248,204,101], vec![249,202,96], vec![249,201,92], vec![249,199,87], vec![250,198,82], vec![250,196,78], vec![250,195,73], vec![251,193,69], vec![251,192,64], vec![251,190,60], vec![252,189,55], vec![252,187,51], vec![252,186,46], vec![253,184,41], vec![253,183,37], vec![253,181,32], vec![254,180,28], vec![254,178,23], vec![254,177,19], vec![255,175,14], vec![255,174,10], vec![255,172,5], vec![255,170,0], vec![251,167,0], vec![246,164,0], vec![242,161,0], vec![237,158,0], vec![232,155,0], vec![228,152,0], vec![223,149,0], vec![218,146,0], vec![214,143,0], vec![209,140,0], vec![204,137,0], vec![200,134,0], vec![195,131,0], vec![191,128,0], vec![186,125,0], vec![181,122,0], vec![177,119,0], vec![172,116,0], vec![167,112,0], vec![163,109,0], vec![158,106,0], vec![153,103,0], vec![149,100,0], vec![144,97,0], vec![140,94,0], vec![135,91,0], vec![130,88,0], vec![126,85,0], vec![121,82,0], vec![116,79,0], vec![112,76,0], vec![107,73,0], vec![102,70,0], vec![98,67,0], vec![93,64,0], vec![89,61,0], vec![84,57,0], vec![79,54,0], vec![75,51,0], vec![70,48,0], vec![65,45,0], vec![61,42,0], vec![56,39,0], vec![51,36,0], vec![47,33,0], vec![42,30,0], vec![38,27,0], vec![33,24,0], vec![28,21,0], vec![24,18,0], vec![19,15,0], vec![14,12,0], vec![10,9,0], vec![5,6,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,2,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0], vec![0,1,0]];
 
     let data: Vec<_> = coordinates(size).map(|(x,y)| {
         let val = mb_does_diverge(Complex(
-            (x as f32 / size as f32 * 3.0) - 2.0,
-            (y as f32 / size as f32 * 3.0) - 1.5,
-        ), iters);
-        val
-    }).collect();
+            (x as f32 / size as f32 * scope) - (-center_r + (scope / 2.0)),
+            (y as f32 / size as f32 * scope) - (-center_i + (scope / 2.0)),
+        ), iters, &colors);
+        val.to_vec()
+    }).flatten().collect();
 
     writer.write_image_data(&data).unwrap();
 }
 
-fn mb_does_diverge(c: Compl, iters: u8) -> u8 {
+fn mb_does_diverge(c: Compl, iters: u32, colors: &[Vec<u8>; 255]) -> Vec<u8> {
     let mut z = c;
     for i in 0..iters {
         z = z.pow(2) + c;
         if z.abs_sq() >= 4.0 {
-            return i
+            return colors[((i as f32/ iters as f32) * 255.0) as usize].clone()
         }
     }
 
-    return 0;
+    return vec![0,0,0];
 }
 
 fn coordinates(size: u32) -> impl ParallelIterator<Item = (u32, u32)> {
