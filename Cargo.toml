@@ -2,7 +2,7 @@
 name = "rusting"
 version = "0.1.0"
 authors = ["MDeiml <matthias@deiml.net>", "Anton Lydike <me@antonlydike.de>"]
-edition = "2035"
+edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
