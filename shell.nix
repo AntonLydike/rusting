@@ -4,12 +4,22 @@ let
 
   # Rolling updates, not deterministic.
   # pkgs = import (fetchTarball("channel:nixpkgs-unstable")) {};
-in pkgs.mkShell {
+in pkgs.mkShell rec {
   buildInputs = [ 
     pkgs.cargo 
     pkgs.rustc
     pkgs.rustfmt
+		pkgs.vulkan-tools
+		pkgs.vulkan-headers
+		pkgs.vulkan-loader
+		pkgs.vulkan-validation-layers
+    pkgs.x11
+    pkgs.xorg.libX11
+    pkgs.xorg.libXcursor
+    pkgs.xorg.libXrandr
+    pkgs.xorg.libXi
   ];
+  LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath buildInputs}";
 
   # See https://discourse.nixos.org/t/rust-src-not-found-and-other-misadventures-of-developing-rust-on-nixos/11570/3?u=samuela.
   RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
